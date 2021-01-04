@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>haproxy on Max&#39;s Blog</title>
-    <link>http://maxluan.github.com/tags/haproxy/</link>
+    <link>https://maxluan.github.io/tags/haproxy/</link>
     <description>Recent content in haproxy on Max&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>[Home](/) &amp;#183; Theme [Simpleness](https://github.com/RainerChiang/simpleness) Powered by [Hugo](https://gohugo.io/)</copyright>
-    <lastBuildDate>Mon, 04 Jan 2021 21:03:19 +0800</lastBuildDate><atom:link href="http://maxluan.github.com/tags/haproxy/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 04 Jan 2021 21:03:19 +0800</lastBuildDate><atom:link href="https://maxluan.github.io/tags/haproxy/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Haproxy初见篇</title>
-      <link>http://maxluan.github.com/posts/haproxy-intro/</link>
+      <link>https://maxluan.github.io/posts/haproxy-intro/</link>
       <pubDate>Mon, 04 Jan 2021 21:03:19 +0800</pubDate>
       
-      <guid>http://maxluan.github.com/posts/haproxy-intro/</guid>
+      <guid>https://maxluan.github.io/posts/haproxy-intro/</guid>
       <description>Haproxy 大纲  功能  使用方法   安装 实验  搭建 测试   调试 常见故障  troubleshooting    内容 功能 开源负载均衡器。https://github.com/haproxy/haproxy
 支持第四层（tcp）和第七层（http）转发。
 通常被用来和Nginx和LVS比较。
