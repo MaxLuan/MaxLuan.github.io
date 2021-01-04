@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Hugo 0.80.0" />
+
+  <title> Haproxy初见篇 |  Max&#39;s Blog</title>
+  <meta name="description" content="introduction to haproxy">
+  <link rel="stylesheet" href="http://maxluan.github.com/css/simpleness.css">
+  <link rel="canonical" href="http://maxluan.github.com/posts/haproxy-intro/">
+  <link rel="alternate" type="application/rss+xml" href="" title="Max&#39;s Blog">
+  
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <header class="menus">
+  
+
+  <nav >
+    
+    <a href="/"> Home</a>
+    
+    <a href="/about/"> About</a>
+    
+    <a href="/tags/"> Tags</a>
+    
+  </nav>
+
+  <nav class="fontawesome">
+    
+    <a href="https://github.com/maxluan" target="_blank">
+        <i title="GitHub" class="fab fa-github"></i>
+    </a>
+    
+    
+    <a href="http://maxluan.github.com/index.xml" target="_blank">
+        <i title="RSS" class="fas fa-rss"></i>
+    </a>
+    
+  </nav>
+  
+  
+  <div class="hidden description">A blog.</div>
+  
+</header>
+
+<article class="article">
+  <header>
+    <h1 style="text-align: center;" >Haproxy初见篇</h1>
+
+    <div class="post-meta">
+    
+      <time datetime="2021-01-04T21:03:19&#43;08:00">January 04, 2021</time> &nbsp; 
+    
+
+     &nbsp;
+
+    
+    
+    
+
+    
+      <i class="far fa-clock"></i>
+      
+      
+      
+
+      
+        7 min
+      
+      0 s
+      &nbsp;
+    
+
+    
+    </div>
+  </header>
+
+   
+
+  <div class="text">
+    <h1 id="haproxy">Haproxy</h1>
+<h2 id="大纲">大纲</h2>
+<ul>
+<li>功能
+<ul>
+<li>使用方法</li>
+</ul>
+</li>
+<li>安装</li>
+<li>实验
+<ul>
+<li>搭建</li>
+<li>测试</li>
+</ul>
+</li>
+<li>调试</li>
+<li>常见故障
+<ul>
+<li>troubleshooting</li>
+</ul>
+</li>
+</ul>
+<h2 id="内容">内容</h2>
+<h3 id="功能">功能</h3>
+<p>开源负载均衡器。https://github.com/haproxy/haproxy</p>
+<p>支持第四层（tcp）和第七层（http）转发。</p>
+<p>通常被用来和Nginx和LVS比较。</p>
+<p>事件驱动，单一进程模型，能支持非常大的并发连接数。配置的当的情况下，一台服务器可以支持2,000,000并发连接。https://www.freecodecamp.org/news/how-we-fine-tuned-haproxy-to-achieve-2-000-000-concurrent-ssl-connections-d017e61a4d27/</p>
+<p>支持连接拒绝。</p>
+<h3 id="安装">安装</h3>
+<ol>
+<li>打开1344 port</li>
+</ol>
+<ul>
+<li>
+<p>CentOS 或 Red Hat Enterprise Linux:</p>
+<p><code>firewall-cmd --add-port=1344/tcp --permanent</code></p>
+<p><code>firewall-cmd --reload</code></p>
+</li>
+<li>
+<p>Ubuntu:</p>
+<p><code>ufw allow 1344</code></p>
+</li>
+<li>
+<p>Debian:</p>
+<p><code>apt-get install iptables-persistent</code></p>
+<p><code>iptables -A INPUT -p tcp --dport 1344 -j 接受</code></p>
+</li>
+</ul>
+<ol start="2">
+<li>安装haproxy</li>
+</ol>
+<ul>
+<li>
+<p>CentOS 或 Red Hat Enterprise Linux:</p>
+<p><code>yum install haproxy</code></p>
+</li>
+<li>
+<p>SUSE Linux Enterprise Server:</p>
+<p><code>zypper install haproxy</code></p>
+</li>
+<li>
+<p>Ubuntu 和 Debian:</p>
+<p><code>apt-get install haproxy</code></p>
+</li>
+</ul>
+<ol start="3">
+<li>
+<p>配置</p>
+<p><a href="https://www.haproxy.com/blog/the-four-essential-sections-of-an-haproxy-configuration/#:~:text=There%20are%20four%20essential%20sections,routed%20to%20your%20backend%20servers">https://www.haproxy.com/blog/the-four-essential-sections-of-an-haproxy-configuration/#:~:text=There%20are%20four%20essential%20sections,routed%20to%20your%20backend%20servers</a>.</p>
+<p>配置好后，执行下面的命令套用配置</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo haproxy -f /etc/haproxy/haproxy.cfg
+</code></pre></div><p>sudo haproxy -f /etc/haproxy/haproxy.cfgsudo haproxy -f /etc/haproxy/haproxy.cfg</p>
+</li>
+</ol>
+<h4 id="logging">logging</h4>
+<p>注意，global部分有关于log的字段。<code>/dev/log</code>是系统的socket。如果<code>dev</code>下没有<code>log</code> socket，则请</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo service rsyslog start
+</code></pre></div><h3 id="实验">实验</h3>
+<h4 id="echo-server">echo server</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;log&#34;</span>
+	<span style="color:#e6db74">&#34;net/http&#34;</span>
+	<span style="color:#e6db74">&#34;os&#34;</span>
+	<span style="color:#e6db74">&#34;net&#34;</span>
+)
+
+<span style="color:#66d9ef">const</span> (
+	<span style="color:#a6e22e">CONN_HOST</span> = <span style="color:#e6db74">&#34;0.0.0.0&#34;</span>
+	<span style="color:#a6e22e">CONN_PORT</span> = <span style="color:#e6db74">&#34;3333&#34;</span>
+	<span style="color:#a6e22e">CONN_TYPE</span> = <span style="color:#e6db74">&#34;tcp&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">flag</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Getenv</span>(<span style="color:#e6db74">&#34;http&#34;</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">flag</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;true&#34;</span> {
+		<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#a6e22e">httpHandler</span>)
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ListenAndServe</span>(<span style="color:#e6db74">&#34;:3333&#34;</span>, <span style="color:#66d9ef">nil</span>))
+	} <span style="color:#66d9ef">else</span> {
+		<span style="color:#a6e22e">l</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">net</span>.<span style="color:#a6e22e">Listen</span>(<span style="color:#a6e22e">CONN_TYPE</span>, <span style="color:#a6e22e">CONN_HOST</span><span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">CONN_PORT</span>)
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Error listening: &#34;</span>, <span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">Error</span>())
+			<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Exit</span>(<span style="color:#ae81ff">1</span>)
+		}
+		<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">Close</span>()
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Listening on &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">CONN_HOST</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;：&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">CONN_PORT</span>)
+		<span style="color:#66d9ef">for</span> {
+			<span style="color:#a6e22e">conn</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">Accept</span>()
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+				<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Error accepting: &#34;</span>, <span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">Error</span>())
+				<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Exit</span>(<span style="color:#ae81ff">1</span>)
+			}
+			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Accepted connection.&#34;</span>)
+			<span style="color:#66d9ef">go</span> <span style="color:#a6e22e">handleRequest</span>(<span style="color:#a6e22e">conn</span>)
+		}
+	}
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">httpHandler</span>(<span style="color:#a6e22e">writer</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">request</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>){
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Fprint</span>(<span style="color:#a6e22e">writer</span>, <span style="color:#e6db74">&#34;echo from server: &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Getenv</span>(<span style="color:#e6db74">&#34;ServerName&#34;</span>))
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">handleRequest</span>(<span style="color:#a6e22e">conn</span> <span style="color:#a6e22e">net</span>.<span style="color:#a6e22e">Conn</span>) {
+	<span style="color:#a6e22e">buf</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">byte</span>, <span style="color:#ae81ff">1024</span>)
+	<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">conn</span>.<span style="color:#a6e22e">Read</span>(<span style="color:#a6e22e">buf</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Error reading: &#34;</span>, <span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">Error</span>())
+	}
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;received &#34;</span> <span style="color:#f92672">+</span> string(<span style="color:#a6e22e">buf</span>))
+	<span style="color:#a6e22e">conn</span>.<span style="color:#a6e22e">Write</span>([]byte(<span style="color:#e6db74">&#34;echo from server: &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Getenv</span>(<span style="color:#e6db74">&#34;ServerName&#34;</span>)))
+	<span style="color:#a6e22e">conn</span>.<span style="color:#a6e22e">Close</span>()
+}
+</code></pre></div><p><strong>注意</strong> 由于需要容器化，监听地址必须是<code>0.0.0.0</code>而不是<code>localhost</code>。</p>
+<p>这个echo server支持如下功能</p>
+<ol>
+<li>tcp echo. 向server 发送任意消息，可以收到server的echo message</li>
+<li>http echo. 访问<code>/</code>，可以收到server的echo message.</li>
+<li>通过环境变量http=true 实现tcp/http echo 的切换。</li>
+<li>为了区分服务器，我们设置<code>ServerName</code>环境变量。这个环境变量会出现在echo message中。</li>
+</ol>
+<p>为了模拟haproxy多服务器环境，我们对echo server进行容器化。Dockerfile如下</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> golang:alpine</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> ServerName<span style="color:#f92672">=</span>test
+<span style="color:#66d9ef">ENV</span> http<span style="color:#f92672">=</span>false
+<span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /build</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> . .<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> go mod download<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> go build -o main .<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /dist</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> cp /build/main .<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> 3333/tcp</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;/dist/main&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span></code></pre></div><p>build docker image:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker build -t echo-server .
+</code></pre></div><p>运行docker container</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker run -d -p 3333:3333 --env http<span style="color:#f92672">=</span>true --env ServerName<span style="color:#f92672">=</span>server1 echo-server
+docker run -d -p 3334:3333 --env http<span style="color:#f92672">=</span>true --env ServerName<span style="color:#f92672">=</span>server2 echo-server
+docker run -d -p 3335:3333 --env http<span style="color:#f92672">=</span>true --env ServerName<span style="color:#f92672">=</span>server3 echo-server
+<span style="color:#75715e"># 或</span>
+docker run -d -p 3333:3333 --env http<span style="color:#f92672">=</span>false --env ServerName<span style="color:#f92672">=</span>server1 echo-server
+docker run -d -p 3334:3333 --env http<span style="color:#f92672">=</span>false --env ServerName<span style="color:#f92672">=</span>server2 echo-server
+docker run -d -p 3335:3333 --env http<span style="color:#f92672">=</span>false --env ServerName<span style="color:#f92672">=</span>server3 echo-server
+</code></pre></div><h4 id="http">http</h4>
+<p>运行echo server.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker run -d -p 3333:3333 --env http<span style="color:#f92672">=</span>true --env ServerName<span style="color:#f92672">=</span>server1 echo-server
+docker run -d -p 3334:3333 --env http<span style="color:#f92672">=</span>true --env ServerName<span style="color:#f92672">=</span>server2 echo-server
+</code></pre></div><p>配置haproxy，</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo vim /etc/haproxy/haproxy.cfg
+</code></pre></div><pre><code>global
+        log /dev/log    local0
+        log /dev/log    local1 notice
+        chroot /var/lib/haproxy
+        stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
+        stats timeout 30s
+        user haproxy
+        group haproxy
+        daemon
+
+        # Default SSL material locations
+        ca-base /etc/ssl/certs
+        crt-base /etc/ssl/private
+
+        # See: https://ssl-config.mozilla.org/#server=haproxy&amp;server-version=2.0.3&amp;config=intermediate
+        ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
+        ssl-default-bind-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
+        ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
+        
+defaults
+        log     global
+        mode    http
+        option  httplog
+        option  dontlognull
+        timeout connect 5000
+        timeout client  50000
+        timeout server  50000
+        errorfile 400 /etc/haproxy/errors/400.http
+        errorfile 403 /etc/haproxy/errors/403.http
+        errorfile 408 /etc/haproxy/errors/408.http
+        errorfile 500 /etc/haproxy/errors/500.http
+        errorfile 502 /etc/haproxy/errors/502.http
+        errorfile 503 /etc/haproxy/errors/503.http
+        errorfile 504 /etc/haproxy/errors/504.http
+</code></pre><p>global 和 default section 使用默认设置。</p>
+<pre><code>frontend main
+        bind *:80
+        use_backend echo-server
+        default_backend echo-server
+
+backend echo-server
+        mode http
+        option  forwardfor
+        balance roundrobin
+        cookie  SERVERID
+        option  httpchk HEAD /index.html
+        server  web01 localhost:3333 cookie web01 check inter 2000 rise 3 fall 3 weight 3
+        server  web02 localhost:3334 cookie web02 check inter 2000 rise 3 fall 3 weight 3
+        server  web03 localhost:3335 cookie web03 check inter 2000 rise 3 fall 3 weight 3
+</code></pre><p>这里使用了最小的设置。</p>
+<p>套用设定</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo haproxy -f /etc/haproxy/haproxy.cfg
+</code></pre></div><p>测试：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#66d9ef">for</span> i in <span style="color:#66d9ef">$(</span>seq <span style="color:#ae81ff">1</span> 10<span style="color:#66d9ef">)</span>; <span style="color:#66d9ef">do</span> curl localhost:80; <span style="color:#66d9ef">done</span>
+</code></pre></div><p>输出：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo from server: server1
+echo from server: server2
+echo from server: server1
+echo from server: server2
+echo from server: server1
+echo from server: server2
+echo from server: server1
+echo from server: server2
+echo from server: server1
+echo from server: server2
+</code></pre></div><p>这符合 roundrobin 算法的预期输出。</p>
+<h4 id="tcp">tcp</h4>
+<p>运行echo server</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker run -d -p 3333:3333 --env http<span style="color:#f92672">=</span>false --env ServerName<span style="color:#f92672">=</span>server1 echo-server
+docker run -d -p 3334:3333 --env http<span style="color:#f92672">=</span>false --env ServerName<span style="color:#f92672">=</span>server2 echo-server
+</code></pre></div><p>修改haproxy 配置。其中，</p>
+<pre><code>defaults
+        log     global
+        mode    tcp
+        timeout connect 5000
+        timeout client  50000
+        timeout server  50000
+        errorfile 400 /etc/haproxy/errors/400.http
+        errorfile 403 /etc/haproxy/errors/403.http
+        errorfile 408 /etc/haproxy/errors/408.http
+        errorfile 500 /etc/haproxy/errors/500.http
+        errorfile 502 /etc/haproxy/errors/502.http
+        errorfile 503 /etc/haproxy/errors/503.http
+        errorfile 504 /etc/haproxy/errors/504.http
+</code></pre><pre><code>frontend main
+        bind *:1344
+        use_backend echo-server
+        default_backend echo-server
+
+backend echo-server
+        mode tcp
+        balance roundrobin
+        option  httpchk HEAD /index.html
+        server  web01 localhost:3333 check inter 2000 rise 3 fall 3 weight 3
+        server  web02 localhost:3334 check inter 2000 rise 3 fall 3 weight 3
+        server  web03 localhost:3335 check inter 2000 rise 3 fall 3 weight 3
+</code></pre><p>测试</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#66d9ef">for</span> i in <span style="color:#66d9ef">$(</span>seq <span style="color:#ae81ff">1</span> 10<span style="color:#66d9ef">)</span>; <span style="color:#66d9ef">do</span> echo <span style="color:#e6db74">&#34;hello&#34;</span> | nc localhost 1344; <span style="color:#66d9ef">done</span>
+</code></pre></div><p>输出为：</p>
+<pre><code>echo from server: server1
+echo from server: server2
+echo from server: server1
+echo from server: server2
+echo from server: server1
+echo from server: server2
+echo from server: server1
+echo from server: server2
+echo from server: server1
+echo from server: server2
+</code></pre><p>复合预期。</p>
+<h2 id="结论">结论</h2>
+<p>至此，对haproxy的初见，安装，配置，初步测试实验都已完成。</p>
+<p>目前仍有未进行的工作：</p>
+<ol>
+<li>进阶功能的测试，包括
+<ol>
+<li>拒绝连接</li>
+<li>reverse proxy</li>
+<li>sticky session</li>
+</ol>
+</li>
+<li>大部分高级的配置仍未cover</li>
+<li>常见故障troubleshooting和调试</li>
+</ol>
+<p>将在未来陆续进行。</p>
+
+  </div>
+
+  <footer>
+    <hr class="end-line">
+
+    
+
+    
+    <div class="post-tags">
+      <i class="fas fa-tags"></i>
+      
+        <a href="/tags/haproxy">haproxy</a>
+        &nbsp;
+      
+        <a href="/tags/devops">devops</a>
+        &nbsp;
+      
+        <a href="/tags/middleware">middleware</a>
+        &nbsp;
+      
+    </div>
+    
+
+    
+    
+  </footer>
+
+  <div class="comments">
+
+
+
+</div>
+
+</article>
+
+
+</body>
+<div class="foot">
+  
+  
+    &copy; 2019 - 2021 &#183; 
+    <a href="/">Home</a> · Theme <a href="https://github.com/RainerChiang/simpleness">Simpleness</a> Powered by <a href="https://gohugo.io/">Hugo</a> &#183;
+    <a href="#"><i class="fas fa-chevron-up"></i></a>
+  
+
+  
+</div>
+
+<script src="/js/lazyload.min.js"></script>
+<script>
+  var lazyImage = new LazyLoad({
+    container: document.getElementById('article')
+  });
+</script>
+
+
+</html>

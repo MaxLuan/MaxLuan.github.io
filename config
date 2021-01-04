@@ -1,0 +1,9 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = true
+	symlinks = false
+	ignorecase = true
+[remote "blog"]
+	url = git@github.com:MaxLuan/maxluan.github.com.git
+	fetch = +refs/heads/*:refs/remotes/blog/*
