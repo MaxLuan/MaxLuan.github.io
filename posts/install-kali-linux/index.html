@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Hugo 0.80.0" />
+
+  <title> 安装Kali Linux |  Max&#39;s Blog</title>
+  <meta name="description" content="Kali Linux installation guide">
+  <link rel="stylesheet" href="https://maxluan.github.io/css/simpleness.css">
+  <link rel="canonical" href="https://maxluan.github.io/posts/install-kali-linux/">
+  <link rel="alternate" type="application/rss+xml" href="" title="Max&#39;s Blog">
+  
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <header class="menus">
+  
+
+  <nav >
+    
+    <a href="/"> Home</a>
+    
+    <a href="/about/"> About</a>
+    
+    <a href="/tags/"> Tags</a>
+    
+  </nav>
+
+  <nav class="fontawesome">
+    
+    <a href="https://github.com/maxluan" target="_blank">
+        <i title="GitHub" class="fab fa-github"></i>
+    </a>
+    
+    
+    <a href="https://maxluan.github.io/index.xml" target="_blank">
+        <i title="RSS" class="fas fa-rss"></i>
+    </a>
+    
+  </nav>
+  
+  
+  <div class="hidden description">A blog.</div>
+  
+</header>
+
+<article class="article">
+  <header>
+    <h1 style="text-align: center;" >安装Kali Linux</h1>
+
+    <div class="post-meta">
+    
+      <time datetime="2021-01-24T15:03:19&#43;08:00">January 24, 2021</time> &nbsp; 
+    
+
+     &nbsp;
+
+    
+    
+    
+
+    
+      <i class="far fa-clock"></i>
+      
+      
+      
+
+      
+        3 min
+      
+      44 s
+      &nbsp;
+    
+
+    
+      <i class="fas fa-folder"></i>
+      
+      <a href="/categories/kali">kali</a>
+      &nbsp;
+      
+      <a href="/categories/installation">installation</a>
+      &nbsp;
+      
+      <a href="/categories/security">security</a>
+      &nbsp;
+      
+    
+    </div>
+  </header>
+
+   
+
+  <div class="text">
+    <h1 id="安装kali-linux">安装Kali Linux</h1>
+<h2 id="如何在虚拟机环境下使用kali-linux">如何在虚拟机环境下使用Kali Linux</h2>
+<h3 id="通过官方镜像安装">通过官方镜像安装</h3>
+<p>官方镜像下载地址：<a href="https://www.kali.org/downloads/">Official Kali Linux Downloads</a></p>
+<h3 id="通过使用已安装好的虚拟机文件">通过使用已安装好的虚拟机文件</h3>
+<p>这样做的好处是，我们可以避免手动安装需要面对的配置问题，有些配置问题并不简单，也许会配置错误，导致虚拟机不可用。</p>
+<p>虚拟机文件下载地址：<a href="https://www.offensive-security.com/kali-linux-vm-vmware-virtualbox-image-download/#1572305786515-43ed3ee1-b9c8">Kali Linux Custom Image Downloads - Offensive Security (offensive-security.com)</a></p>
+<p>虚拟机文件支持vmware和virtualbox。但在我实际操作中，virtualbox版本不可用，症状体现是：import ova后，启动虚拟机，简单的grub画面后，操作系统黑屏，屏幕左上角有光标闪烁。系统就这样停在这里了。</p>
+<p>我通过搜索，发现类似的症状很多人都有遇到，而网友提供的解释也是五花八门。我没有办法确定症结所在，也没有办法使virtualbox正常运行。我们必须承认，和vmware相比，virtualbox总还是差那么一点儿。我们的目标是学习Kali Linux，最好不要在虚拟机上浪费太多时间。我选择使用vmware。</p>
+<p>vmware虚拟机文件是7z file，解压缩后是完整的虚拟机。我们把这些虚拟机文件夹copy到vmware虚拟机文件夹后，在vmware里选择scan for virtual machines，即可导入虚拟机。经测试，虚拟机可以正常启动运行。</p>
+<p>默认用户名和密码是kali。</p>
+<h2 id="如何使用官方镜像安装kali-linux">如何使用官方镜像安装Kali Linux</h2>
+<p>一些场景下，我们需要使用物理机安装系统。</p>
+<p>我仍然选择使用vmware虚拟机进行测试。不适用virtualbox的原因和之前一样，我在安装时遇到了没有解释的问题。这次症状如下：加载安装镜像，进入界面后选择install/graphical install，接下来都是黑屏。同样的问题在网上可以看到很多，解答依然是五花八门。</p>
+<h4 id="安装kali的步骤">安装Kali的步骤</h4>
+<ol>
+<li>
+<p>新建虚拟机：</p>
+<p>选择File -&gt; New Virtual Machine -&gt; Typical -&gt; 选择installer disk image file -&gt; Debian 5 (Kali 2020 4)</p>
+</li>
+<li>
+<p>进入安装界面，选择graphical installation</p>
+</li>
+<li>
+<p>一路选择默认配置</p>
+<p>也可尝试如：分区，全盘加密等设置。</p>
+</li>
+<li>
+<p>安装GRUB启动引导器：选择yes</p>
+</li>
+<li>
+<p>device for boot loader installation: 主驱动器 <code>/dev/sda</code></p>
+</li>
+</ol>
+
+  </div>
+
+  <footer>
+    <hr class="end-line">
+
+    
+
+    
+    <div class="post-tags">
+      <i class="fas fa-tags"></i>
+      
+        <a href="/tags/"></a>
+        &nbsp;
+      
+    </div>
+    
+
+    
+    
+    <div class="releated-posts">
+      <h3>Related Posts</h3>
+      
+      <i class="fas fa-paperclip"></i>
+      <a href="/posts/haproxy-intro/">Haproxy初见篇</a>
+      <br>
+      
+    </div>
+    
+  </footer>
+
+  <div class="comments">
+
+
+
+</div>
+
+</article>
+
+
+</body>
+<div class="foot">
+  
+  
+    &copy; 2019 - 2021 &#183; 
+    <a href="/">Home</a> · Theme <a href="https://github.com/RainerChiang/simpleness">Simpleness</a> Powered by <a href="https://gohugo.io/">Hugo</a> &#183;
+    <a href="#"><i class="fas fa-chevron-up"></i></a>
+  
+
+  
+</div>
+
+<script src="/js/lazyload.min.js"></script>
+<script>
+  var lazyImage = new LazyLoad({
+    container: document.getElementById('article')
+  });
+</script>
+
+
+</html>

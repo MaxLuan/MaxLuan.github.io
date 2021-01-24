@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Max&#39;s Blog</title>
-    <link>https://maxluan.github.io/posts/</link>
-    <description>Recent content in Posts on Max&#39;s Blog</description>
+    <title>security on Max&#39;s Blog</title>
+    <link>https://maxluan.github.io/categories/security/</link>
+    <description>Recent content in security on Max&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>[Home](/) &amp;#183; Theme [Simpleness](https://github.com/RainerChiang/simpleness) Powered by [Hugo](https://gohugo.io/)</copyright>
-    <lastBuildDate>Sun, 24 Jan 2021 15:03:19 +0800</lastBuildDate><atom:link href="https://maxluan.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 24 Jan 2021 15:03:19 +0800</lastBuildDate><atom:link href="https://maxluan.github.io/categories/security/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>安装Kali Linux</title>
       <link>https://maxluan.github.io/posts/install-kali-linux/</link>
@@ -30,28 +30,6 @@ vmware虚拟机文件是7z file，解压缩后是完整的虚拟机。我们把�
 也可尝试如：分区，全盘加密等设置。
   安装GRUB启动引导器：选择yes
   device for boot loader installation: 主驱动器 /dev/sda</description>
-    </item>
-    
-    <item>
-      <title>Haproxy初见篇</title>
-      <link>https://maxluan.github.io/posts/haproxy-intro/</link>
-      <pubDate>Mon, 04 Jan 2021 21:03:19 +0800</pubDate>
-      
-      <guid>https://maxluan.github.io/posts/haproxy-intro/</guid>
-      <description>Haproxy 大纲  功能  使用方法   安装 实验  搭建 测试   调试 常见故障  troubleshooting    内容 功能 开源负载均衡器。https://github.com/haproxy/haproxy
-支持第四层（tcp）和第七层（http）转发。
-通常被用来和Nginx和LVS比较。
-事件驱动，单一进程模型，能支持非常大的并发连接数。配置的当的情况下，一台服务器可以支持2,000,000并发连接。https://www.freecodecamp.org/news/how-we-fine-tuned-haproxy-to-achieve-2-000-000-concurrent-ssl-connections-d017e61a4d27/
-支持连接拒绝。
-安装  打开1344 port    CentOS 或 Red Hat Enterprise Linux:
-firewall-cmd --add-port=1344/tcp --permanent
-firewall-cmd --reload
-  Ubuntu:
-ufw allow 1344
-  Debian:
-apt-get install iptables-persistent
-iptables -A INPUT -p tcp --dport 1344 -j 接受
-  安装haproxy    CentOS 或 Red Hat Enterprise Linux:</description>
     </item>
     
   </channel>

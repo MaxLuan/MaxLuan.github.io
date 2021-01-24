@@ -7,7 +7,31 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>[Home](/) &amp;#183; Theme [Simpleness](https://github.com/RainerChiang/simpleness) Powered by [Hugo](https://gohugo.io/)</copyright>
-    <lastBuildDate>Mon, 04 Jan 2021 21:03:19 +0800</lastBuildDate><atom:link href="https://maxluan.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 24 Jan 2021 15:03:19 +0800</lastBuildDate><atom:link href="https://maxluan.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>安装Kali Linux</title>
+      <link>https://maxluan.github.io/posts/install-kali-linux/</link>
+      <pubDate>Sun, 24 Jan 2021 15:03:19 +0800</pubDate>
+      
+      <guid>https://maxluan.github.io/posts/install-kali-linux/</guid>
+      <description>安装Kali Linux 如何在虚拟机环境下使用Kali Linux 通过官方镜像安装 官方镜像下载地址：Official Kali Linux Downloads
+通过使用已安装好的虚拟机文件 这样做的好处是，我们可以避免手动安装需要面对的配置问题，有些配置问题并不简单，也许会配置错误，导致虚拟机不可用。
+虚拟机文件下载地址：Kali Linux Custom Image Downloads - Offensive Security (offensive-security.com)
+虚拟机文件支持vmware和virtualbox。但在我实际操作中，virtualbox版本不可用，症状体现是：import ova后，启动虚拟机，简单的grub画面后，操作系统黑屏，屏幕左上角有光标闪烁。系统就这样停在这里了。
+我通过搜索，发现类似的症状很多人都有遇到，而网友提供的解释也是五花八门。我没有办法确定症结所在，也没有办法使virtualbox正常运行。我们必须承认，和vmware相比，virtualbox总还是差那么一点儿。我们的目标是学习Kali Linux，最好不要在虚拟机上浪费太多时间。我选择使用vmware。
+vmware虚拟机文件是7z file，解压缩后是完整的虚拟机。我们把这些虚拟机文件夹copy到vmware虚拟机文件夹后，在vmware里选择scan for virtual machines，即可导入虚拟机。经测试，虚拟机可以正常启动运行。
+默认用户名和密码是kali。
+如何使用官方镜像安装Kali Linux 一些场景下，我们需要使用物理机安装系统。
+我仍然选择使用vmware虚拟机进行测试。不适用virtualbox的原因和之前一样，我在安装时遇到了没有解释的问题。这次症状如下：加载安装镜像，进入界面后选择install/graphical install，接下来都是黑屏。同样的问题在网上可以看到很多，解答依然是五花八门。
+安装Kali的步骤   新建虚拟机：
+选择File -&amp;gt; New Virtual Machine -&amp;gt; Typical -&amp;gt; 选择installer disk image file -&amp;gt; Debian 5 (Kali 2020 4)
+  进入安装界面，选择graphical installation
+  一路选择默认配置
+也可尝试如：分区，全盘加密等设置。
+  安装GRUB启动引导器：选择yes
+  device for boot loader installation: 主驱动器 /dev/sda</description>
+    </item>
+    
     <item>
       <title>Haproxy初见篇</title>
       <link>https://maxluan.github.io/posts/haproxy-intro/</link>

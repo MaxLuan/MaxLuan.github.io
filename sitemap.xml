@@ -3,12 +3,47 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://maxluan.github.io/tags/devops/</loc>
+    <loc>https://maxluan.github.io/categories/</loc>
+    <lastmod>2021-01-24T15:03:19+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://maxluan.github.io/categories/installation/</loc>
+    <lastmod>2021-01-24T15:03:19+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://maxluan.github.io/categories/kali/</loc>
+    <lastmod>2021-01-24T15:03:19+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://maxluan.github.io/</loc>
+    <lastmod>2021-01-24T15:03:19+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://maxluan.github.io/posts/</loc>
+    <lastmod>2021-01-24T15:03:19+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://maxluan.github.io/categories/security/</loc>
+    <lastmod>2021-01-24T15:03:19+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://maxluan.github.io/posts/install-kali-linux/</loc>
+    <lastmod>2021-01-24T15:03:19+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://maxluan.github.io/categories/devops/</loc>
     <lastmod>2021-01-04T21:03:19+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://maxluan.github.io/tags/haproxy/</loc>
+    <loc>https://maxluan.github.io/categories/haproxy/</loc>
     <lastmod>2021-01-04T21:03:19+08:00</lastmod>
   </url>
   
@@ -18,27 +53,12 @@
   </url>
   
   <url>
-    <loc>https://maxluan.github.io/</loc>
-    <lastmod>2021-01-04T21:03:19+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://maxluan.github.io/tags/middleware/</loc>
-    <lastmod>2021-01-04T21:03:19+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://maxluan.github.io/posts/</loc>
+    <loc>https://maxluan.github.io/categories/middleware/</loc>
     <lastmod>2021-01-04T21:03:19+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://maxluan.github.io/tags/</loc>
-    <lastmod>2021-01-04T21:03:19+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://maxluan.github.io/categories/</loc>
   </url>
   
 </urlset>
